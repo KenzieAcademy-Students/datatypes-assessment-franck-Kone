@@ -38,6 +38,11 @@ function textAnalyzer() {
     //  vowels and punctuations
     for (let index = 0; index < result.text.length; index++) {
 
+        // waldo Indexes
+        if (result.text.slice(index, index + 5) === 'Waldo') {
+            result.waldoIndexes.push(index)
+        }
+
         // vowels count
         for (let key of Object.keys(result.vowels)) {
 
@@ -61,6 +66,9 @@ function textAnalyzer() {
     // Number of characters 
     result.numCharacters = result.text.length
 
+    // The last three words
+    result.lastThreeWords = noPunctuationArray.slice(-3)
+
     // Number of Words
     for (let word of noPunctuationArray) {
         if (word) {
@@ -72,19 +80,7 @@ function textAnalyzer() {
     result.longestWord += noPunctuationArray.sort((word, anotherWord) => anotherWord.length - word.length)[0]
 
     // The shortest word
-    result.shortestWord += noPunctuationArray.sort((a, b) => a.length - b.length).join(' ').trim().split(' ')[0]
-
-    // The last three words
-    result.lastThreeWords = noPunctuation.split(' ').slice(-3)
-
-    // waldo Indexes
-console.log(result.text.indexOf('Waldo'))
-    // .join(' ').trim().split(' ')[0]
-    //     // console.log(withPunctuationArray[character].toLowerCase().split(""))
-    // }
-
-
-    // punctuations count
+    result.shortestWord += noPunctuationArray.sort((word, otherWord) => word.length - otherWord.length).join(' ').trim().split(' ')[0]
 
     console.log(JSON.stringify(result))
 }
