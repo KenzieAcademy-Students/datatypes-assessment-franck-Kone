@@ -29,60 +29,85 @@ function textAnalyzer() {
         waldoIndexes: [],
     }
 
-    result.text += textArea.value
+    //Number of characters call function
+    numOfChar(result)
 
-    let noPunctuation = result.text.replace(/[^\w\s\']|_/g, '')
+    //longest, shortest, last 3,and number of word call Function
+    longShortLastNumWord(result)
 
-    let noPunctuationArray = noPunctuation.split(' ')
-
-    //  vowels and punctuations
-    for (let index = 0; index < result.text.length; index++) {
-
-        // waldo Indexes
-        if (result.text.slice(index, index + 5) === 'Waldo') {
-            result.waldoIndexes.push(index)
-        }
-
-        // vowels count
-        for (let key of Object.keys(result.vowels)) {
-
-            if (result.text[index] === key) {
-                result.vowels[key] += 1
-            }
-        }
-
-        // punctuations count
-        if (result.text[index] === '.') {
-            result.punctuation.period += 1
-        } else if (result.text[index] === ',') {
-            result.punctuation.comma += 1
-        } else if (result.text[index] === '!') {
-            result.punctuation.exclamation += 1
-        } else if (result.text[index] === '?') {
-            result.punctuation.questionMark += 1
-        }
-    }
-
-    // Number of characters 
-    result.numCharacters = result.text.length
-
-    // The last three words
-    result.lastThreeWords = noPunctuationArray.slice(-3)
-
-    // Number of Words
-    for (let word of noPunctuationArray) {
-        if (word) {
-            result.numWords += 1
-        }
-    }
-
-    // The longest word
-    result.longestWord += noPunctuationArray.sort((word, anotherWord) => anotherWord.length - word.length)[0]
-
-    // The shortest word
-    result.shortestWord += noPunctuationArray.sort((word, otherWord) => word.length - otherWord.length).join(' ').trim().split(' ')[0]
+    //Call function for vowels punctuations and waldoIndexes
+    vowelPunctWalIndex(result)
 
     console.log(JSON.stringify(result))
 }
 
-// Hello!  Welcome to kenzie.  My name is Robert, and i'm here with my friend Waldo.  Have you met Waldo?
+
+
+
+//function for vowels punctuations and waldoIndexes
+function vowelPunctWalIndex(myParameter) {
+    //  vowels and punctuations
+    for (let index = 0; index < myParameter.text.length; index++) {
+
+        // waldo Indexes
+        if (myParameter.text.toLowerCase().slice(index, index + 5) === 'waldo') {
+            myParameter.waldoIndexes.push(index)
+        }
+
+        // vowels count
+        for (let key of Object.keys(myParameter.vowels)) {
+
+            if (myParameter.text[index].toLowerCase() === key) {
+                myParameter.vowels[key] += 1
+            }
+        }
+
+        // punctuations count
+        if (myParameter.text[index] === '.') {
+            myParameter.punctuation.period += 1
+        } else if (myParameter.text[index] === ',') {
+            myParameter.punctuation.comma += 1
+        } else if (myParameter.text[index] === '!') {
+            myParameter.punctuation.exclamation += 1
+        } else if (myParameter.text[index] === '?') {
+            myParameter.punctuation.questionMark += 1
+        }
+    }
+}
+
+//longest, shortest, last 3,and number of word Function
+function longShortLastNumWord(wordParameter) {
+
+    //remove punctuations 
+    let noPunctuation = wordParameter.text.replace(/[^\w\s\']|_/g, '')
+
+    let noPunctuationArray = noPunctuation.split(' ')
+
+    // The last three words
+    wordParameter.lastThreeWords = noPunctuationArray.slice(-3)
+
+    // Number of Words
+    for (let word of noPunctuationArray) {
+        if (word) {
+            wordParameter.numWords += 1
+        }
+    }
+
+    // The longest word
+    wordParameter.longestWord += noPunctuationArray.sort((word, anotherWord) => anotherWord.length - word.length)[0]
+
+    // The shortest word
+    wordParameter.shortestWord += noPunctuationArray.sort((word, otherWord) => word.length - otherWord.length).join(' ').trim().split(' ')[0]
+}
+
+//number of characters Function
+function numOfChar(charParameter) {
+
+    charParameter.text += textArea.value
+
+    charParameter.numCharacters = charParameter.text.length
+}
+
+//Render result function
+
+// Hello!  Welcome to kenzie.  My name is Robert, and i'm here with my friend Waldo.  Have you met WALDO?
