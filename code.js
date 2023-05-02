@@ -16,10 +16,10 @@ function textAnalyzer() {
             u: 0
         },
         punctuation: {
-            period: 0,
-            comma: 0,
-            exclamation: 0,
-            questionMark: 0
+            Periods: 0,
+            Commas: 0,
+            "Question Marks": 0,
+            "Exclamation Points": 0
         },
         numCharacters: 0,
         numWords: 0,
@@ -38,16 +38,23 @@ function textAnalyzer() {
     //Call function for vowels punctuations and waldoIndexes
     vowelPunctWalIndex(result)
 
-    //Call function for render dynamically the results
-    renderResult(result)
-
-    // console.log(JSON.stringify(result))
+    //Call function to render dynamically the results
+    // clean the static elements results
+    while (results.children[1].children[0].firstChild ) {
+        results.children[1].children[0].removeChild(results.children[1].children[0].firstChild)
+    }
+    while (results.children[1].children[1].firstChild) {
+        results.children[1].children[1].removeChild(results.children[1].children[1].firstChild)
+    }
+    
+    renderDynamicResult(result)
+  
 }
 
 
 
 
-//function for vowels punctuations and waldoIndexes
+//function for vowels punctuations and waldoIndexes Values
 function vowelPunctWalIndex(myParameter) {
     //  vowels and punctuations
     for (let index = 0; index < myParameter.text.length; index++) {
@@ -67,18 +74,18 @@ function vowelPunctWalIndex(myParameter) {
 
         // punctuations count
         if (myParameter.text[index] === '.') {
-            myParameter.punctuation.period += 1
+            myParameter.punctuation.Periods += 1
         } else if (myParameter.text[index] === ',') {
-            myParameter.punctuation.comma += 1
+            myParameter.punctuation.Commas += 1
         } else if (myParameter.text[index] === '!') {
-            myParameter.punctuation.exclamation += 1
+            myParameter.punctuation['Exclamation Points'] += 1
         } else if (myParameter.text[index] === '?') {
-            myParameter.punctuation.questionMark += 1
+            myParameter.punctuation['Question Marks'] += 1
         }
     }
 }
 
-//longest, shortest, last 3,and number of word Function
+//longest, shortest, last 3,and number of word Values Function 
 function longShortLastNumWord(wordParameter) {
 
     //remove punctuations 
@@ -111,9 +118,9 @@ function numOfChar(charParameter) {
     charParameter.numCharacters = charParameter.text.length
 }
 
-//Render result function
-renderStaticBoard()
-function renderStaticBoard() {
+//Render static results function
+renderStaticResult()
+function renderStaticResult() {
 
     //Elements creation
     let resultTitle = document.createElement('h2'), resultDiv = document.createElement('div'), volAndPunctDiv = document.createElement('div');
@@ -128,10 +135,10 @@ function renderStaticBoard() {
     staticVowelUnordList.innerHTML = staticVowelList
 
     //display static punct List
-    let staticPunctList = '<li>Period: 0</li><li>Commas: 0</li><li>Question Marks: 0</li><li>Exclamation Points: 0</li>'
+    let staticPunctList = '<li>Periods: 0</li><li>Commas: 0</li><li>Question Marks: 0</li><li>Exclamation Points: 0</li>'
     punctUnordList.innerHTML = staticPunctList
 
-    //display results board 
+    //display static results board 
     vowelsTitle.innerText = 'Vowel Counts'
     punctTitle.innerText = 'Punctuation Counts'
     numOfCharTitle.innerText = 'Number of Characters: 0'
@@ -140,30 +147,78 @@ function renderStaticBoard() {
     shortestWordTitle.innerText = 'Shortest Word:'
     lastThreeWordsTitle.innerText = 'Last Three Words:'
     waldoIndexesTitle.innerText = 'Waldo Indexes: []'
-
-    // append results board
     resultTitle.textContent = 'Text Analysis'
+
+    // append static results board
     volAndPunctDiv.append(vowelsTitle,staticVowelUnordList, punctTitle, punctUnordList)
     otherResultDiv.append(numOfCharTitle, numOfWordsTitle, longestWordTitle, shortestWordTitle, lastThreeWordsTitle, waldoIndexesTitle)
     resultDiv.append(volAndPunctDiv, otherResultDiv)
     results.append(resultTitle)
     results.append(resultDiv)
 
-    //style results board
-    resultDiv.setAttribute('style', "display: flex; justify-content: space-around; padding: 0 40px 0 40px")
+    //style static results board
+    resultDiv.setAttribute('style', "display: flex; justify-content: space-around; padding: 0 30px 0 30px")
 }
 
-function renderResult(dynamicParam) {
+//Render dynamic results function
+function renderDynamicResult(dynamicParam) {
+
+    // vowel counts, dynamic results
     let vowelsUnordList = document.createElement('ul')
+    vowelsTitle = document.createElement('h4')
+    vowelsTitle.innerText = 'Vowel Counts'
     let vowelList = ''
+
     for (let vowel in dynamicParam.vowels) {
       vowelList += `<li>${vowel}: ${dynamicParam.vowels[vowel]}</li>`
-        console.log(JSON.stringify(dynamicParam), results.children[1].children[0])
-        // console.log(JSON.stringify(dynamicParam), results.childNodes)
+      
     }
     vowelsUnordList.innerHTML = vowelList
-    console.log(vowelsUnordList)
+    
+    results.children[1].children[0].insertBefore(vowelsTitle, results.children[1].children[0].firstChild)
     results.children[1].children[0].firstChild.after(vowelsUnordList)
 
+    // Punctuation counts, dynamic results
+    let punctUnordList = document.createElement('ul')
+    punctTitle = document.createElement('h4')
+    punctTitle.innerText = 'Punctuation Counts'
+    let punctList = ''
+    
+    for (let punct in dynamicParam.punctuation) {
+        punctList += `<li>${punct}: ${dynamicParam.punctuation[punct]}</li>`
+    }
+    punctUnordList.innerHTML = punctList
+    results.children[1].children[0].lastChild.after(punctTitle)
+    results.children[1].children[0].lastChild.after(punctUnordList)
+
+    // Number of Characters, dynamic results
+    let numOfChar = document.createElement('h4')
+    numOfChar.innerText = `Number of Characters: ${dynamicParam.numCharacters}`
+    results.children[1].children[1].insertBefore(numOfChar, results.children[1].children[1].firstChild )
+
+    // Number of Words, dynamic results
+    let numOfWordsTitle = document.createElement('h4')
+    numOfWordsTitle.innerText = `Number of Words: ${dynamicParam.numWords}`
+    results.children[1].children[1].lastChild.after(numOfWordsTitle)
+
+    // Longest Word, dynamic results
+    let longestWordTitle = document.createElement('h4')
+    longestWordTitle.innerText = `Longest Word: ${dynamicParam.longestWord}`
+    results.children[1].children[1].lastChild.after(longestWordTitle)
+
+    // Shortest Word, dynamic results
+    let shortestWordTitle = document.createElement('h4')
+    shortestWordTitle.innerText = `Shortest Word: ${dynamicParam.shortestWord}`
+    results.children[1].children[1].lastChild.after(shortestWordTitle)
+
+    // Last Three Words, dynamic results
+    let lastThreeWordsTitle = document.createElement('h4')
+    lastThreeWordsTitle.innerText = `Last Three Words: ${dynamicParam.lastThreeWords}`
+    results.children[1].children[1].lastChild.after(lastThreeWordsTitle)
+
+    // Waldo Indexes, dynamic results
+    let waldoIndexesTitle = document.createElement('h4')
+    waldoIndexesTitle.innerText = `Waldo Indexes: ${JSON.stringify(dynamicParam.waldoIndexes)}`
+    results.children[1].children[1].lastChild.after(waldoIndexesTitle)
 }
-// Hello!  Welcome to kenzie.  My name is Robert, and i'm here with my friend Waldo.  Have you met WALDO?
+// Hello!  Welcome to kenzie.  My name is Robert, and i'm here with my friend Waldo.  Have you met waldo?
