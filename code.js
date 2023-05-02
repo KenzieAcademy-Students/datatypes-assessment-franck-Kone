@@ -109,5 +109,39 @@ function numOfChar(charParameter) {
 }
 
 //Render result function
+renderResult()
+function renderResult ( ) {
 
+    //Elements creation
+let resultTitle = document.createElement('h2'), resultDiv = document.createElement('div'), volAndPunctDiv = document.createElement('div');
+let otherResultDiv = document.createElement('div'), vowelsTitle = document.createElement('h4'), punctTitle = document.createElement('h4');
+let numOfCharTitle = document.createElement('h4'), numOfWordsTitle = document.createElement('h4');
+let longestWordTitle = document.createElement('h4'), shortestWordTitle = document.createElement('h4');
+let lastThreeWordsTitle = document.createElement('h4'), waldoIndexesTitle = document.createElement('h4');
+
+//display results board 
+
+vowelsTitle.innerText = 'Vowel Counts'
+punctTitle.innerText = 'Punctuation Counts'
+numOfCharTitle.innerText = 'Number of Characters:'
+numOfWordsTitle.innerText = 'Number of Words:'
+longestWordTitle.innerText = 'Longest Word:'
+shortestWordTitle.innerText = 'Shortest Word:'
+lastThreeWordsTitle.innerText = 'Last Three Words:'
+waldoIndexesTitle.innerText = 'Waldo Indexes: []'
+
+// append results board
+resultTitle.textContent = 'Text Analysis'
+volAndPunctDiv.append(vowelsTitle, punctTitle)
+otherResultDiv.append(numOfCharTitle,numOfWordsTitle,longestWordTitle,shortestWordTitle,lastThreeWordsTitle,waldoIndexesTitle)
+resultDiv.append(volAndPunctDiv, otherResultDiv)
+results.append(resultTitle)
+results.append(resultDiv)
+
+//style results board
+resultDiv.style.display = 'flex'
+resultDiv.style.justifyContent = 'space-around'
+resultDiv.style.padding = '0 40px 0 40px'
+
+}
 // Hello!  Welcome to kenzie.  My name is Robert, and i'm here with my friend Waldo.  Have you met WALDO?
