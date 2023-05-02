@@ -31,4 +31,9 @@ h1 {
   margin: 1em auto;
   padding: 1em;
 }
-
+li{
+  list-style: none;
+}
+ul{
+  padding: 0;
+}

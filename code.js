@@ -38,7 +38,10 @@ function textAnalyzer() {
     //Call function for vowels punctuations and waldoIndexes
     vowelPunctWalIndex(result)
 
-    console.log(JSON.stringify(result))
+    //Call function for render dynamically the results
+    renderResult(result)
+
+    // console.log(JSON.stringify(result))
 }
 
 
@@ -109,39 +112,58 @@ function numOfChar(charParameter) {
 }
 
 //Render result function
-renderResult()
-function renderResult ( ) {
+renderStaticBoard()
+function renderStaticBoard() {
 
     //Elements creation
-let resultTitle = document.createElement('h2'), resultDiv = document.createElement('div'), volAndPunctDiv = document.createElement('div');
-let otherResultDiv = document.createElement('div'), vowelsTitle = document.createElement('h4'), punctTitle = document.createElement('h4');
-let numOfCharTitle = document.createElement('h4'), numOfWordsTitle = document.createElement('h4');
-let longestWordTitle = document.createElement('h4'), shortestWordTitle = document.createElement('h4');
-let lastThreeWordsTitle = document.createElement('h4'), waldoIndexesTitle = document.createElement('h4');
+    let resultTitle = document.createElement('h2'), resultDiv = document.createElement('div'), volAndPunctDiv = document.createElement('div');
+    let otherResultDiv = document.createElement('div'), vowelsTitle = document.createElement('h4'), punctTitle = document.createElement('h4');
+    let numOfCharTitle = document.createElement('h4'), numOfWordsTitle = document.createElement('h4');
+    let longestWordTitle = document.createElement('h4'), shortestWordTitle = document.createElement('h4');
+    let lastThreeWordsTitle = document.createElement('h4'), waldoIndexesTitle = document.createElement('h4');
+    let staticVowelUnordList = document.createElement('ul'), punctUnordList = document.createElement('ul');
 
-//display results board 
+    //display static vowels List
+    let staticVowelList = '<li>a: 0</li><li>e: 0</li><li>i: 0</li><li>o: 0</li><li>u: 0</li>' 
+    staticVowelUnordList.innerHTML = staticVowelList
 
-vowelsTitle.innerText = 'Vowel Counts'
-punctTitle.innerText = 'Punctuation Counts'
-numOfCharTitle.innerText = 'Number of Characters:'
-numOfWordsTitle.innerText = 'Number of Words:'
-longestWordTitle.innerText = 'Longest Word:'
-shortestWordTitle.innerText = 'Shortest Word:'
-lastThreeWordsTitle.innerText = 'Last Three Words:'
-waldoIndexesTitle.innerText = 'Waldo Indexes: []'
+    //display static punct List
+    let staticPunctList = '<li>Period: 0</li><li>Commas: 0</li><li>Question Marks: 0</li><li>Exclamation Points: 0</li>'
+    punctUnordList.innerHTML = staticPunctList
 
-// append results board
-resultTitle.textContent = 'Text Analysis'
-volAndPunctDiv.append(vowelsTitle, punctTitle)
-otherResultDiv.append(numOfCharTitle,numOfWordsTitle,longestWordTitle,shortestWordTitle,lastThreeWordsTitle,waldoIndexesTitle)
-resultDiv.append(volAndPunctDiv, otherResultDiv)
-results.append(resultTitle)
-results.append(resultDiv)
+    //display results board 
+    vowelsTitle.innerText = 'Vowel Counts'
+    punctTitle.innerText = 'Punctuation Counts'
+    numOfCharTitle.innerText = 'Number of Characters: 0'
+    numOfWordsTitle.innerText = 'Number of Words: 0'
+    longestWordTitle.innerText = 'Longest Word:'
+    shortestWordTitle.innerText = 'Shortest Word:'
+    lastThreeWordsTitle.innerText = 'Last Three Words:'
+    waldoIndexesTitle.innerText = 'Waldo Indexes: []'
 
-//style results board
-resultDiv.style.display = 'flex'
-resultDiv.style.justifyContent = 'space-around'
-resultDiv.style.padding = '0 40px 0 40px'
+    // append results board
+    resultTitle.textContent = 'Text Analysis'
+    volAndPunctDiv.append(vowelsTitle,staticVowelUnordList, punctTitle, punctUnordList)
+    otherResultDiv.append(numOfCharTitle, numOfWordsTitle, longestWordTitle, shortestWordTitle, lastThreeWordsTitle, waldoIndexesTitle)
+    resultDiv.append(volAndPunctDiv, otherResultDiv)
+    results.append(resultTitle)
+    results.append(resultDiv)
+
+    //style results board
+    resultDiv.setAttribute('style', "display: flex; justify-content: space-around; padding: 0 40px 0 40px")
+}
+
+function renderResult(dynamicParam) {
+    let vowelsUnordList = document.createElement('ul')
+    let vowelList = ''
+    for (let vowel in dynamicParam.vowels) {
+      vowelList += `<li>${vowel}: ${dynamicParam.vowels[vowel]}</li>`
+        console.log(JSON.stringify(dynamicParam), results.children[1].children[0])
+        // console.log(JSON.stringify(dynamicParam), results.childNodes)
+    }
+    vowelsUnordList.innerHTML = vowelList
+    console.log(vowelsUnordList)
+    results.children[1].children[0].firstChild.after(vowelsUnordList)
 
 }
 // Hello!  Welcome to kenzie.  My name is Robert, and i'm here with my friend Waldo.  Have you met WALDO?
