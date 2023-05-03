@@ -28,6 +28,9 @@ function textAnalyzer() {
         lastThreeWords: [],
         waldoIndexes: [],
     }
+   // spell-check for "school" => "Kenzie Academy", "Teacher" => "Jack Daniels", "coach"(1st time) => "Luke Warren", "coach"(2nd) => "Shanel Williams" and "learner success advisor" => "Scott Voisine"
+    spellCheck(result)
+
 
     //Number of characters call function
     numOfChar(result)
@@ -40,19 +43,15 @@ function textAnalyzer() {
 
     //Call function to render dynamically the results
     // clean the static elements results
-    while (results.children[1].children[0].firstChild ) {
+    while (results.children[1].children[0].firstChild) {
         results.children[1].children[0].removeChild(results.children[1].children[0].firstChild)
     }
     while (results.children[1].children[1].firstChild) {
         results.children[1].children[1].removeChild(results.children[1].children[1].firstChild)
     }
-    
+
     renderDynamicResult(result)
-  
 }
-
-
-
 
 //function for vowels punctuations and waldoIndexes Values
 function vowelPunctWalIndex(myParameter) {
@@ -131,7 +130,7 @@ function renderStaticResult() {
     let staticVowelUnordList = document.createElement('ul'), punctUnordList = document.createElement('ul');
 
     //display static vowels List
-    let staticVowelList = '<li>a: 0</li><li>e: 0</li><li>i: 0</li><li>o: 0</li><li>u: 0</li>' 
+    let staticVowelList = '<li>a: 0</li><li>e: 0</li><li>i: 0</li><li>o: 0</li><li>u: 0</li>'
     staticVowelUnordList.innerHTML = staticVowelList
 
     //display static punct List
@@ -150,7 +149,7 @@ function renderStaticResult() {
     resultTitle.textContent = 'Text Analysis'
 
     // append static results board
-    volAndPunctDiv.append(vowelsTitle,staticVowelUnordList, punctTitle, punctUnordList)
+    volAndPunctDiv.append(vowelsTitle, staticVowelUnordList, punctTitle, punctUnordList)
     otherResultDiv.append(numOfCharTitle, numOfWordsTitle, longestWordTitle, shortestWordTitle, lastThreeWordsTitle, waldoIndexesTitle)
     resultDiv.append(volAndPunctDiv, otherResultDiv)
     results.append(resultTitle)
@@ -170,11 +169,11 @@ function renderDynamicResult(dynamicParam) {
     let vowelList = ''
 
     for (let vowel in dynamicParam.vowels) {
-      vowelList += `<li>${vowel}: ${dynamicParam.vowels[vowel]}</li>`
-      
+        vowelList += `<li>${vowel}: ${dynamicParam.vowels[vowel]}</li>`
+
     }
     vowelsUnordList.innerHTML = vowelList
-    
+
     results.children[1].children[0].insertBefore(vowelsTitle, results.children[1].children[0].firstChild)
     results.children[1].children[0].firstChild.after(vowelsUnordList)
 
@@ -183,7 +182,7 @@ function renderDynamicResult(dynamicParam) {
     punctTitle = document.createElement('h4')
     punctTitle.innerText = 'Punctuation Counts'
     let punctList = ''
-    
+
     for (let punct in dynamicParam.punctuation) {
         punctList += `<li>${punct}: ${dynamicParam.punctuation[punct]}</li>`
     }
@@ -194,7 +193,7 @@ function renderDynamicResult(dynamicParam) {
     // Number of Characters, dynamic results
     let numOfChar = document.createElement('h4')
     numOfChar.innerText = `Number of Characters: ${dynamicParam.numCharacters}`
-    results.children[1].children[1].insertBefore(numOfChar, results.children[1].children[1].firstChild )
+    results.children[1].children[1].insertBefore(numOfChar, results.children[1].children[1].firstChild)
 
     // Number of Words, dynamic results
     let numOfWordsTitle = document.createElement('h4')
@@ -220,5 +219,68 @@ function renderDynamicResult(dynamicParam) {
     let waldoIndexesTitle = document.createElement('h4')
     waldoIndexesTitle.innerText = `Waldo Indexes: ${JSON.stringify(dynamicParam.waldoIndexes)}`
     results.children[1].children[1].lastChild.after(waldoIndexesTitle)
+}
+
+// OPTIONAL PART 
+// SPELL-CHECK function, school will produce Kenzie Academy, Jack Daniels for teacher, Luke Warren for the first typing coach and Shanel Williams for the 2nd, Scott Voisine for Learner success Advisor.
+let coachCount = 0
+
+function spellCheck(spellChekVariable) {
+
+    // I added resultClone Object to reset the value of result object in order to update the results of the text Analyser when modifying the textArea value 
+    let resultClone = {
+        text: "",
+        vowels: {
+            a: 0,
+            e: 0,
+            i: 0,
+            o: 0,
+            u: 0
+        },
+        punctuation: {
+            Periods: 0,
+            Commas: 0,
+            "Question Marks": 0,
+            "Exclamation Points": 0
+        },
+        numCharacters: 0,
+        numWords: 0,
+        longestWord: "",
+        shortestWord: "",
+        lastThreeWords: [],
+        waldoIndexes: [],
+    }
+    spellChekVariable = resultClone
+    let modifiedText = ''
+    for (let num = 0; num < textArea.value.length; num++) {
+        if (textArea.value.toLowerCase().slice(num, num + 6) === 'school') {
+            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 6), "Kenzie Academy")
+            spellChekVariable.text = modifiedText
+            console.log(spellChekVariable.text)
+            textArea.value = modifiedText
+
+        } else if (textArea.value.toLowerCase().slice(num, num + 7) === 'teacher') {
+
+            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 7), "Jack Daniels")
+            spellChekVariable.text = modifiedText
+            textArea.value = modifiedText
+
+        } else if (textArea.value.toLowerCase().slice(num, num + 5) === 'coach' && coachCount === 0) {
+            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 5), "Luke Warren")
+            spellChekVariable.text = modifiedText
+            textArea.value = modifiedText
+            coachCount += 1
+        } else if (textArea.value.toLowerCase().slice(num, num + 5) === 'coach' && coachCount === 1) {
+            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 5), "Shanel Williams")
+            spellChekVariable.text = modifiedText
+            textArea.value = modifiedText
+            coachCount = 0
+        } else if (textArea.value.toLowerCase().slice(num, num + 23) === 'learner success advisor') {
+            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 23), "Scott Voisine")
+            spellChekVariable.text = modifiedText
+            textArea.value = modifiedText
+        }
+    }
+   
 }
 // Hello!  Welcome to kenzie.  My name is Robert, and i'm here with my friend Waldo.  Have you met waldo?
