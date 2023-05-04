@@ -208,33 +208,37 @@ function spellCheck(spellChekVariable) {
         lastThreeWords: [],
         waldoIndexes: [],
     }
+
     spellChekVariable = resultClone
     let modifiedText = ''
+
     for (let num = 0; num < textArea.value.length; num++) {
+
         if (textArea.value.toLowerCase().slice(num, num + 6) === 'school') {
-            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 6), "Kenzie Academy")
+            modifiedText = textArea.value.replace(textArea.value.slice(num, num + 6), "Kenzie Academy")
             spellChekVariable.text = modifiedText
-            console.log(spellChekVariable.text)
             textArea.value = modifiedText
 
         } else if (textArea.value.toLowerCase().slice(num, num + 7) === 'teacher') {
 
-            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 7), "Jack Daniels")
+            modifiedText = textArea.value.replace(textArea.value.slice(num, num + 7), "Jack Daniels")
             spellChekVariable.text = modifiedText
             textArea.value = modifiedText
 
         } else if (textArea.value.toLowerCase().slice(num, num + 5) === 'coach' && coachCount === 0) {
-            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 5), "Luke Warren")
+            modifiedText = textArea.value.replace(textArea.value.slice(num, num + 5), "Luke Warren")
             spellChekVariable.text = modifiedText
             textArea.value = modifiedText
             coachCount += 1
+
         } else if (textArea.value.toLowerCase().slice(num, num + 5) === 'coach' && coachCount === 1) {
-            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 5), "Shanel Williams")
+            modifiedText = textArea.value.replace(textArea.value.slice(num, num + 5), "Shanel Williams")
             spellChekVariable.text = modifiedText
             textArea.value = modifiedText
             coachCount = 0
+
         } else if (textArea.value.toLowerCase().slice(num, num + 23) === 'learner success advisor') {
-            modifiedText = textArea.value.replace(textArea.value.toLowerCase().slice(num, num + 23), "Scott Voisine")
+            modifiedText = textArea.value.replace(textArea.value.slice(num, num + 23), "Scott Voisine")
             spellChekVariable.text = modifiedText
             textArea.value = modifiedText
         }
