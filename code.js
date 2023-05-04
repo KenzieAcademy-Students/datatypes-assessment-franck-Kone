@@ -42,15 +42,7 @@ function textAnalyzer() {
     vowelPunctWalIndex(result)
 
     //Call function to render dynamically the results
-    // clean the static elements results
-    while (results.children[1].children[0].firstChild) {
-        results.children[1].children[0].removeChild(results.children[1].children[0].firstChild)
-    }
-    while (results.children[1].children[1].firstChild) {
-        results.children[1].children[1].removeChild(results.children[1].children[1].firstChild)
-    }
-
-    renderDynamicResult(result)
+    dynamicResultMethod2(result)
 }
 
 //function for vowels punctuations and waldoIndexes Values
@@ -159,66 +151,32 @@ function renderStaticResult() {
     resultDiv.setAttribute('style', "display: flex; justify-content: space-around; padding: 0 30px 0 30px")
 }
 
-//Render dynamic results function
-function renderDynamicResult(dynamicParam) {
+//Render Dynamic Results Function Method 2
+function dynamicResultMethod2(resultParam) {
 
-    // vowel counts, dynamic results
-    let vowelsUnordList = document.createElement('ul')
-    vowelsTitle = document.createElement('h4')
-    vowelsTitle.innerText = 'Vowel Counts'
-    let vowelList = ''
+    let unordListBank = document.querySelectorAll('ul'), divListBank = document.querySelectorAll('div'), displayVowelsResult = '', displayPunctResult = '', othersResult
 
-    for (let vowel in dynamicParam.vowels) {
-        vowelList += `<li>${vowel}: ${dynamicParam.vowels[vowel]}</li>`
-
+    // Update vowels result
+    for (let vowel of Object.keys(resultParam.vowels)) {
+        displayVowelsResult += `<li>${vowel}: ${resultParam.vowels[vowel]}</li>`
     }
-    vowelsUnordList.innerHTML = vowelList
+    unordListBank[0].innerHTML = displayVowelsResult
 
-    results.children[1].children[0].insertBefore(vowelsTitle, results.children[1].children[0].firstChild)
-    results.children[1].children[0].firstChild.after(vowelsUnordList)
-
-    // Punctuation counts, dynamic results
-    let punctUnordList = document.createElement('ul')
-    punctTitle = document.createElement('h4')
-    punctTitle.innerText = 'Punctuation Counts'
-    let punctList = ''
-
-    for (let punct in dynamicParam.punctuation) {
-        punctList += `<li>${punct}: ${dynamicParam.punctuation[punct]}</li>`
+    // Update punctuations result
+    for (let punct of Object.keys(resultParam.punctuation)) {
+        displayPunctResult += `<li>${punct}: ${resultParam.punctuation[punct]}</li>`
     }
-    punctUnordList.innerHTML = punctList
-    results.children[1].children[0].lastChild.after(punctTitle)
-    results.children[1].children[0].lastChild.after(punctUnordList)
+    unordListBank[1].innerHTML = displayPunctResult
 
-    // Number of Characters, dynamic results
-    let numOfChar = document.createElement('h4')
-    numOfChar.innerText = `Number of Characters: ${dynamicParam.numCharacters}`
-    results.children[1].children[1].insertBefore(numOfChar, results.children[1].children[1].firstChild)
-
-    // Number of Words, dynamic results
-    let numOfWordsTitle = document.createElement('h4')
-    numOfWordsTitle.innerText = `Number of Words: ${dynamicParam.numWords}`
-    results.children[1].children[1].lastChild.after(numOfWordsTitle)
-
-    // Longest Word, dynamic results
-    let longestWordTitle = document.createElement('h4')
-    longestWordTitle.innerText = `Longest Word: ${dynamicParam.longestWord}`
-    results.children[1].children[1].lastChild.after(longestWordTitle)
-
-    // Shortest Word, dynamic results
-    let shortestWordTitle = document.createElement('h4')
-    shortestWordTitle.innerText = `Shortest Word: ${dynamicParam.shortestWord}`
-    results.children[1].children[1].lastChild.after(shortestWordTitle)
-
-    // Last Three Words, dynamic results
-    let lastThreeWordsTitle = document.createElement('h4')
-    lastThreeWordsTitle.innerText = `Last Three Words: ${dynamicParam.lastThreeWords}`
-    results.children[1].children[1].lastChild.after(lastThreeWordsTitle)
-
-    // Waldo Indexes, dynamic results
-    let waldoIndexesTitle = document.createElement('h4')
-    waldoIndexesTitle.innerText = `Waldo Indexes: ${JSON.stringify(dynamicParam.waldoIndexes)}`
-    results.children[1].children[1].lastChild.after(waldoIndexesTitle)
+    // Update Number of Characters, Number of Words, Longest Word,Shortest Word, Last Three Words, Waldo Indexes results
+    othersResult = `
+  <h4>Number of Characters: ${resultParam.numCharacters}</h4>
+  <h4>Number of Words: ${resultParam.numWords}</h4>
+  <h4>Longest Word: ${resultParam.longestWord}</h4>
+  <h4>Shortest Word: ${resultParam.shortestWord}</h4>
+  <h4>Waldo Indexes: ${JSON.stringify(resultParam.waldoIndexes)}</h4>
+  `
+    divListBank[4].innerHTML = othersResult
 }
 
 // OPTIONAL PART 
@@ -281,6 +239,4 @@ function spellCheck(spellChekVariable) {
             textArea.value = modifiedText
         }
     }
-   
 }
-// Hello!  Welcome to kenzie.  My name is Robert, and i'm here with my friend Waldo.  Have you met waldo?
